@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 // Reescribir rutas
 
 
-// Ruta/método de prueba
+// Rutas/métodos de prueba
 app.get('/prueba', (req, res) => {
   return res.status(200).send("<h1>Hola mundo soy el backend</h1>");
   /*
@@ -29,6 +29,13 @@ app.get('/prueba', (req, res) => {
     message: 'hola mundo desde el backend con nodejs'
   });
   */
+});
+
+app.post('/prueba', (req, res) => {
+  return res.status(200).send({
+    nombre: 'Rafael Díaz',
+    message: 'hola mundo desde el backend con nodejs, soy un método POST'
+  });
 });
 
 
