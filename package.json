@@ -1,0 +1,19 @@
+{
+  "name": "api-rest-nodejs",
+  "version": "1.0.0",
+  "description": "API RESTful NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RadigarHub/api-rest-nodejs.git"
+  },
+  "author": "Rafael Díaz García",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RadigarHub/api-rest-nodejs/issues"
+  },
+  "homepage": "https://github.com/RadigarHub/api-rest-nodejs#readme"
+}
