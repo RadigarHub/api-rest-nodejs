@@ -145,6 +145,12 @@ var controller = {
       });
 
     });
+  },
+
+  update: function(req, res) {
+    return res.status(200).send({
+      message: "Método de actualización de datos de usuario."
+    });
   }
 
 };
