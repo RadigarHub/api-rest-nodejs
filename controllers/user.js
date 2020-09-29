@@ -1,6 +1,7 @@
 'use strict'
 
 var validator = require('validator');
+var User = require('../models/user');
 
 var controller = {
 
@@ -27,30 +28,46 @@ var controller = {
     var validate_password = !validator.isEmpty(params.password);
 
     if (validate_name && validate_surname && validate_email && validate_password) {
-
-      
       // Crear objeto de usuario
+      var user = new User();
       
       // Asignar valores al usuario
+      user.name = params.name;
+      user.surname = params.surname;
+      user.email = params.email.toLowerCase();
+      user.role = 'ROLE_USER';
+      user.image = null;
       
       // Comprobar si el usuario ya existe
-      
-      // Si no existe, cifrar la contraseña
-      
-      // Si no existe, guardarlo
-      
-      // Devolver respuesta
+      User.findOne({email: user.email}, (err, issetUser) => {
+        if (err) {
+          return res.status(500).send({
+            message: "Error al comprobar duplicidad de usuario."
+          });
+        }
+
+        if (!issetUser) {
+          // Si no existe, cifrar la contraseña
+          
+          // Si no existe, guardarlo
+          
+          // Devolver respuesta
+          return res.status(400).send({
+            message: "El usuario NO está registrado."
+          });
+          
+        } else {
+          return res.status(400).send({
+            message: "El usuario ya está registrado."
+          });
+        }
+      });
       
     } else {
       return res.status(200).send({
         message: "Validación de los datos del usuario incorrecta, inténtelo de nuevo."
       });
     }
-
-    return res.status(200).send({
-      message: "Registro de usuarios",
-      email: params.email
-    });
   }
 
 };
