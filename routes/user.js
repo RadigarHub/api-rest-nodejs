@@ -13,6 +13,6 @@ router.post('/testeando', UserController.testeando);
 // Rutas de usuarios
 router.post('/register', UserController.save);
 router.post('/login', UserController.login);
-router.put('/update', md_auth.auth, UserController.update);
+router.put('/update', md_auth.authenticate, UserController.update);
 
 module.exports = router;
