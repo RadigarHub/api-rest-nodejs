@@ -3,6 +3,7 @@
 var validator = require('validator');
 var bcrypt = require('bcryptjs');
 var User = require('../models/user');
+const { param } = require('../routes/user');
 
 var controller = {
 
@@ -90,18 +91,29 @@ var controller = {
 
   login: function(req, res) {
     // Recoger los parámetros de la petición
+    var params = req.body;
 
     // Validar los datos
+    var validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
+    var validate_password = !validator.isEmpty(params.password);
+
+    if (!validate_email || !validate_password) {
+      return res.status(200).send({
+        message: "Los datos son incorrectos, envialos bien"
+      });
+    }
 
     // Buscar los usuarios que coincidan con el email
-
-    // Si lo encuentra comprobar la contraseña (coincidencia de email y password / bycript)
-
-    // Si es correcto, generar token de jwt y devolverlo (más tarde)
-
-    // Devolver los datos
-    return res.status(200).send({
-      message: "Método de login"
+    User.findOne({email: params.email.toLowerCase()}, (err, user) => {
+          // Si lo encuentra comprobar la contraseña (coincidencia de email y password / bycript)
+      
+          // Si es correcto, generar token de jwt y devolverlo (más tarde)
+      
+          // Devolver los datos
+          return res.status(200).send({
+            message: "Método de login",
+            user
+          });
     });
   }
 
