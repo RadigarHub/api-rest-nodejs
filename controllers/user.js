@@ -1,5 +1,7 @@
 'use strict'
 
+var validator = require('validator');
+
 var controller = {
 
   probando: function(req, res) {
@@ -16,23 +18,38 @@ var controller = {
 
   save: function(req, res) {
     // Recoger los parámetros de la petición
+    var params = req.body;
 
     // Validar los datos
+    var validate_name = !validator.isEmpty(params.name);
+    var validate_surname = !validator.isEmpty(params.surname);
+    var validate_email = !validator.isEmpty(params.email) && validator.isEmail(params.email);
+    var validate_password = !validator.isEmpty(params.password);
 
-    // Crear objeto de usuario
+    if (validate_name && validate_surname && validate_email && validate_password) {
 
-    // Asignar valores al usuario
-
-    // Comprobar si el usuario ya existe
-
-    // Si no existe, cifrar la contraseña
-    
-    // Si no existe, guardarlo
-
-    // Devolver respuesta
+      
+      // Crear objeto de usuario
+      
+      // Asignar valores al usuario
+      
+      // Comprobar si el usuario ya existe
+      
+      // Si no existe, cifrar la contraseña
+      
+      // Si no existe, guardarlo
+      
+      // Devolver respuesta
+      
+    } else {
+      return res.status(200).send({
+        message: "Validación de los datos del usuario incorrecta, inténtelo de nuevo."
+      });
+    }
 
     return res.status(200).send({
-      message: "Registro de usuarios"
+      message: "Registro de usuarios",
+      email: params.email
     });
   }
 
