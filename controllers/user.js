@@ -3,7 +3,7 @@
 var validator = require('validator');
 var bcrypt = require('bcryptjs');
 var User = require('../models/user');
-const { param } = require('../routes/user');
+var jwt = require('../services/jwt');
 
 var controller = {
 
@@ -121,7 +121,13 @@ var controller = {
       // Si lo encuentra comprobar la contraseña (coincidencia de email y password / bcrypt)
       bcrypt.compare(params.password, user.password, (err, check) => {
         if (check) {
-          // Generar token de jwt y devolverlo (más tarde)
+          // Comprobar si se está pidiendo el token de jwt
+          if (params.gettoken) {
+            // Generar el token jwt y devolverlo
+            return res.status(200).send({
+              token: jwt.createToken(user)
+            });
+          }
 
           // Limpiar el objeto user para que en el lado del cliente no se muestren algunas de sus propiedades
           user.password = undefined;
