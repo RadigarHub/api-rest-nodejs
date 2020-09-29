@@ -8,6 +8,7 @@ var router = express.Router();
 // Rutas de prueba
 router.get('/probando', UserController.probando);
 router.post('/testeando', UserController.testeando);
+router.post('/login', UserController.login);
 
 // Rutas de usuarios
 router.post('/register', UserController.save);

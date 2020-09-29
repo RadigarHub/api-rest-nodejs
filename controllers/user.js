@@ -86,6 +86,23 @@ var controller = {
         message: "Validación de los datos del usuario incorrecta, inténtelo de nuevo."
       });
     }
+  },
+
+  login: function(req, res) {
+    // Recoger los parámetros de la petición
+
+    // Validar los datos
+
+    // Buscar los usuarios que coincidan con el email
+
+    // Si lo encuentra comprobar la contraseña (coincidencia de email y password / bycript)
+
+    // Si es correcto, generar token de jwt y devolverlo (más tarde)
+
+    // Devolver los datos
+    return res.status(200).send({
+      message: "Método de login"
+    });
   }
 
 };
