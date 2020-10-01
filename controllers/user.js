@@ -228,20 +228,38 @@ var controller = {
 
   uploadAvatar: function(req, res) {
     // Configurar el módulo multiparty (md) para permitir la subida de ficheros
+    // Está hecho en routes/user.js
 
     // Recoger el fichero de la petición
+    var file_name = 'Avatar no subido.';
+    console.log(req.files);
 
+    if (!req.files) {
+      return res.status(400).send({
+        status: 'error',
+        message: file_name
+      })
+    }
+      
     // Conseguir el nombre y la extensión del archivo a subir
+    var file_path = req.files.file0.path;
+    var file_split = file_path.split('/'); // En Windows habría que utilizar el separador '\\'
+    var file_name = file_split[2];
+    var ext_split = file_name.split('\.');
+    var file_ext = ext_split[1];
 
     // Comprobar la extensión del fichero a subir (sólo imágenes), si no es válida borrar el fichero
-
+    
     // Obtener el id del usuario identificado
-
+    
     // Buscar y actualizar los datos del usuario
-
+    
     // Devolver respuesta
     return res.status(200).send({
+      status: "success",
       message: "Mensaje desde el método uploadAvatar",
+      file_name: file_name,
+      file_ext: file_ext
     });
   }
 
