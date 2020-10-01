@@ -57,6 +57,21 @@ var controller = {
         message: "Los datos no son válidos"
       });
     }
+  },
+
+  getTopics: function(req, res) {
+    // Cargar la librería de paginación en la clase
+
+    // Recoger la página actual
+
+    // Indicar las opciones de paginación
+
+    // Find paginado
+
+    // Devolver resultado (topics, total de topics, total de páginas)
+    return res.status(200).send({
+      message: "hola desde el método getTopics"
+    });
   }
 
 }
