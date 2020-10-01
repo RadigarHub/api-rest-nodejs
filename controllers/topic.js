@@ -79,11 +79,29 @@ var controller = {
     };
 
     // Find paginado
+    Topic.paginate({}, options, (err, topics) => {
 
-    // Devolver resultado (topics, total de topics, total de páginas)
-    return res.status(200).send({
-      message: "hola desde el método getTopics",
-      options
+      if (err) {
+        return res.status(500).send({
+          status: "error",
+          message: "Error al hacer la consulta"
+        });
+      }
+
+      if (!topics) {
+        return res.status(400).send({
+          status: "error",
+          message: "No existen topics"
+        })
+      }
+
+      // Devolver resultado (topics, total de topics, total de páginas)
+      return res.status(200).send({
+        status: "success",
+        topics: topics.docs,
+        totalDocs: topics.totalDocs,
+        totalPages: topics.totalPages
+      });
     });
   }
 
