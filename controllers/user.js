@@ -2,6 +2,8 @@
 
 var validator = require('validator');
 var bcrypt = require('bcryptjs');
+var fs = require('fs');
+var path = require('path');
 var User = require('../models/user');
 var jwt = require('../services/jwt');
 
@@ -232,8 +234,7 @@ var controller = {
 
     // Recoger el fichero de la petición
     var file_name = 'Avatar no subido.';
-    console.log(req.files);
-
+    // console.log(req.files);
     if (!req.files) {
       return res.status(400).send({
         status: 'error',
@@ -246,21 +247,41 @@ var controller = {
     var file_split = file_path.split('/'); // En Windows habría que utilizar el separador '\\'
     var file_name = file_split[2];
     var ext_split = file_name.split('\.');
-    var file_ext = ext_split[1];
+    var file_ext = ext_split[1].toLocaleLowerCase();
 
     // Comprobar la extensión del fichero a subir (sólo imágenes), si no es válida borrar el fichero
-    
-    // Obtener el id del usuario identificado
-    
-    // Buscar y actualizar los datos del usuario
-    
-    // Devolver respuesta
-    return res.status(200).send({
-      status: "success",
-      message: "Mensaje desde el método uploadAvatar",
-      file_name: file_name,
-      file_ext: file_ext
-    });
+    const allowed_extensions = ['png', 'jpg', 'jpeg', 'gif'];
+    if (!allowed_extensions.includes(file_ext)) {
+
+      fs.unlink(file_path, (err) => {
+        return res.status(400).send({
+          status: "error",
+          message: "La extensión del fichero no es válida"
+        });
+      });
+
+    } else {
+
+      // Obtener el id del usuario identificado
+      var userId = req.user.sub;
+      
+      // Buscar y actualizar los datos del usuario
+      User.findOneAndUpdate({_id: userId}, {image: file_name}, {new: true}, (err, userUpdated) => {
+        
+        // Devolver respuesta
+        if (err || !userUpdated) {
+          return res.status(500).send({
+            status: "error",
+            message: "Error al actualizar los datos del usuario"
+          });
+        }
+
+        return res.status(200).send({
+          status: "success",
+          user: userUpdated
+        });
+      });
+    }
   }
 
 };
