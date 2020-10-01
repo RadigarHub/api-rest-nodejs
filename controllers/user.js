@@ -183,30 +183,46 @@ var controller = {
     // Eliminar propiedades innecesarias
     delete params.password;
 
-    // Buscar y actualizar el usuario
-    var userId = req.user.sub;
-    User.findOneAndUpdate({_id: userId}, params, {new: true}, (err, userUpdated) => {
+    // Comprobar si el email es único
+    User.findOne({email: params.email.toLowerCase()}, (err, user) => {
 
-      // Devolver una respuesta
       if (err) {
         return res.status(500).send({
-          message: "Error al actualizar el usuario.",
-          params
+          message: "Error al intentar actualizar el usuario."
         });
       }
 
-      if (!userUpdated) {
+      if (user && user.email == params.email) {
         return res.status(400).send({
-          message: "No se ha podido actualizar el usuario.",
-          params
+          message: "El email no puede ser actualizado porque ya está asignado a otro usuario."
         });
       }
 
-      return res.status(200).send({
-        status: "success",
-        user: userUpdated
-      });
+      // Buscar y actualizar el usuario
+      var userId = req.user.sub;
+      User.findOneAndUpdate({_id: userId}, params, {new: true}, (err, userUpdated) => {
 
+        // Devolver una respuesta
+        if (err) {
+          return res.status(500).send({
+            message: "Error al actualizar el usuario.",
+            params
+          });
+        }
+
+        if (!userUpdated) {
+          return res.status(400).send({
+            message: "No se ha podido actualizar el usuario.",
+            params
+          });
+        }
+
+        return res.status(200).send({
+          status: "success",
+          user: userUpdated
+        });
+
+      });
     });
   }
 
