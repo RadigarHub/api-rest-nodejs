@@ -297,6 +297,43 @@ var controller = {
         });
       }
     });
+  },
+
+  getUsers: function(req, res) {
+    // En mongoose las querys se pueden ejecutar de dos formas:
+    //  a través de callbacks como hemos visto antes
+    //  usando el método exec() sin utilizar previamente un callback
+    User.find().exec((err, users) => {
+      if (err || !users) {
+        return res.status(400).send({
+          status: "error",
+          message: "No hay usuarios que mostrar"
+        });
+      }
+
+      return res.status(200).send({
+        status: "success",
+        users
+      });
+    })
+  },
+
+  getUser: function(req, res) {
+    var userId = req.params.userId;
+
+    User.findById(userId).exec((err, user) => {
+      if (err || !user) {
+        return res.status(400).send({
+          status: "error",
+          message: "El usuario no existe"
+        });
+      }
+
+      return res.status(200).send({
+        status: "success",
+        user
+      });
+    });
   }
 
 };
