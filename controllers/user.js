@@ -224,6 +224,25 @@ var controller = {
 
       });
     });
+  },
+
+  uploadAvatar: function(req, res) {
+    // Configurar el módulo multiparty (md) para permitir la subida de ficheros
+
+    // Recoger el fichero de la petición
+
+    // Conseguir el nombre y la extensión del archivo a subir
+
+    // Comprobar la extensión del fichero a subir (sólo imágenes), si no es válida borrar el fichero
+
+    // Obtener el id del usuario identificado
+
+    // Buscar y actualizar los datos del usuario
+
+    // Devolver respuesta
+    return res.status(200).send({
+      message: "Mensaje desde el método uploadAvatar",
+    });
   }
 
 };
