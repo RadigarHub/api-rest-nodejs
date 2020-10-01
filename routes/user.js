@@ -3,8 +3,9 @@
 var express = require('express');
 var UserController = require('../controllers/user');
 
-// Middleware de autenticación de usuario
 var router = express.Router();
+
+// Middleware de autenticación de usuario
 var md_auth = require('../middlewares/authenticated');
 
 // Middleware de subida de ficheros
@@ -20,5 +21,6 @@ router.post('/register', UserController.save);
 router.post('/login', UserController.login);
 router.put('/update', md_auth.authenticate, UserController.update);
 router.post('/upload-avatar', [md_auth.authenticate, md_upload], UserController.uploadAvatar);
+router.get('/avatar/:fileName', UserController.avatar);
 
 module.exports = router;

@@ -282,6 +282,21 @@ var controller = {
         });
       });
     }
+  },
+
+  avatar: function(req, res) {
+    var fileName = req.params.fileName;
+    var pathFile = './uploads/users/' + fileName;
+
+    fs.access(pathFile, (err) => {
+      if (!err) {
+        return res.sendFile(path.resolve(pathFile));
+      } else {
+        return res.status(400).send({
+          message: "La imagen no existe"
+        });
+      }
+    });
   }
 
 };
