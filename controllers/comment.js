@@ -1,6 +1,7 @@
 'use strict'
 
 var validator = require('validator');
+const topic = require('../models/topic');
 var Topic = require('../models/topic');
 
 var controller = {
@@ -133,8 +134,58 @@ var controller = {
   },
 
   delete: function(req, res) {
-    return res.status(200).send({
-      message: "Método delete de Comment"
+    // Obtener el id del topic y del comentario a borrar de la url
+    var topicId = req.params.topicId;
+    var commentId = req.params.commentId;
+
+    // Buscar el topic
+    Topic.findById(topicId, (err, topic) => {
+
+      if (err) {
+        return res.status(500).send({
+          status: "error",
+          message: "Error en la petición"
+        });
+      }
+
+      if (!topic) {
+        return res.status(400).send({
+          status: "error",
+          message: "No existe el tema"
+        });
+      }
+      
+      // Seleccionar el subdocumento (comentario)
+      var comment = topic.comments.id(commentId);
+  
+      // Borrar el comentario
+      if (comment) {
+        comment.remove();
+
+        // Guardar el topic
+        topic.save((err) => {
+
+          if (err) {
+            return res.status(500).send({
+              status: "error",
+              message: "Error en la petición"
+            });
+          }
+
+          // Devolver un resultado
+          return res.status(200).send({
+            status: "success",
+            topic
+          });
+        });
+
+      } else {
+        return res.status(400).send({
+          status: "error",
+          message: "No existe el comentario"
+        });
+      }
+  
     });
   }
 
