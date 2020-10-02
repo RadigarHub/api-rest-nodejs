@@ -134,6 +134,37 @@ var controller = {
           topics
         });
     });
+  },
+
+  getTopic: function(req, res) {
+    // Sacar el id del topic de la url
+    var topicId = req.params.id;
+
+    // Find por el id del topic
+    Topic.findById(topicId)
+      .populate('user')
+      .exec((err, topic) => {
+
+        // Devolver resultado
+        if (err) {
+          return res.status(500).send({
+            status: "error",
+            message: "Error en la petición"
+          });  
+        }
+
+        if (!topic) {
+          return res.status(400).send({
+            status: "error",
+            message: "No existe el tema"
+          });
+        }
+
+        return res.status(200).send({
+          status: "success",
+          topic
+        });
+    })
   }
 
 }
