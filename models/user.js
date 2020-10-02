@@ -13,6 +13,14 @@ var UserSchema = Schema({
   role: String
 });
 
+// Para no mostrar la contraseña en los datos del usuario cuando se lista en alguna parte
+UserSchema.methods.toJSON = function() {
+  var obj = this.toObject();
+  delete obj.password;
+
+  return obj;
+}
+
 module.exports = mongoose.model('User', UserSchema);
 
 /*
