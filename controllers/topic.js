@@ -103,6 +103,37 @@ var controller = {
         totalPages: topics.totalPages
       });
     });
+  },
+
+  getTopicsByUser: function(req, res) {
+    // Conseguir el id del usuario
+    var userId = req.params.user;
+
+    // Find con la condición de usuario
+    Topic.find({user: userId})
+      .sort([['date', 'descending']])
+      .exec((err, topics) => {
+
+        // Devolver resultado
+        if (err) {
+          return res.status(500).send({
+            status: "error",
+            message: "Error en la petición"
+          });
+        }
+
+        if (!topics) {
+          return res.status(400).send({
+            status: "error",
+            message: "No hay temas para mostrar"
+          });
+        }
+
+        return res.status(200).send({
+          status: "success",
+          topics
+        });
+    });
   }
 
 }
