@@ -169,19 +169,61 @@ var controller = {
 
   update: function(req, res) {
     // Recoger el id del topic de la url
+    var topicId = req.params.id;
 
     // Recoger los datos que llegan desde put
+    var params = req.body;
 
     // Validar los datos
+    try {
+      var validate_title = !validator.isEmpty(params.title);
+      var validate_content = !validator.isEmpty(params.content);
+      var validate_lang = !validator.isEmpty(params.lang);
+    } catch(err) {
+      return res.status(400).send({
+        message: "Faltan datos por enviar"
+      });
+    }
 
-    // Montar un json con los datos modificables
+    if (validate_title && validate_content && validate_lang) {
 
-    // Find and update del topic por id y por id de usuario
+      // Montar un json con los datos modificables
+      var update = {
+        title: params.title,
+        content: params.content,
+        code: params.code,
+        lang: params.lang
+      };
 
-    // Devolver una respuesta
-    return res.status(200).send({
-      message: "método update"
-    });
+      // Find and update del topic por id y por id de usuario
+      Topic.findOneAndUpdate({_id: topicId, user: req.user.sub}, update, {new: true}, (err, topicUpdated) => {
+        
+        // Devolver una respuesta
+        if (err) {
+          return res.status(500).send({
+            status: "error",
+            message: "Error en la petición"
+          });
+        }
+
+        if (!topicUpdated) {
+          return res.status(400).send({
+            status: "error",
+            message: "No se ha podido actualizar el tema"
+          });
+        }
+
+        return res.status(200).send({
+          status: "success",
+          topic: topicUpdated
+        });
+      });
+
+    } else {
+      return res.status(400).send({
+        message: "Los datos no son válidos"
+      });
+    }
   }
 
 }
