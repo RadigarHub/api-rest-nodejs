@@ -224,6 +224,35 @@ var controller = {
         message: "Los datos no son válidos"
       });
     }
+  },
+
+  delete: function(req, res) {
+    // Sacar el id del topic de la url
+    var topicId = req.params.id;
+
+    // Find and delete por topicID y por userID
+    Topic.findOneAndDelete({_id: topicId, user: req.user.sub}, (err, topicRemoved) => {
+
+      // Devolver respuesta
+      if (err) {
+        return res.status(500).send({
+          status: "error",
+          message: "Error en la petición"
+        });
+      }
+
+      if (!topicRemoved) {
+        return res.status(400).send({
+          status: "error",
+          message: "No se ha podido eliminar el tema"
+        });
+      }
+
+      return res.status(200).send({
+        status: "success",
+        topic: topicRemoved
+      });
+    });
   }
 
 }
