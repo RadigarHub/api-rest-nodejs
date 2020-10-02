@@ -165,6 +165,23 @@ var controller = {
           topic
         });
     })
+  },
+
+  update: function(req, res) {
+    // Recoger el id del topic de la url
+
+    // Recoger los datos que llegan desde put
+
+    // Validar los datos
+
+    // Montar un json con los datos modificables
+
+    // Find and update del topic por id y por id de usuario
+
+    // Devolver una respuesta
+    return res.status(200).send({
+      message: "método update"
+    });
   }
 
 }
