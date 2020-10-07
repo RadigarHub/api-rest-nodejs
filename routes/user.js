@@ -19,7 +19,7 @@ router.post('/testeando', UserController.testeando);
 // Rutas de usuarios
 router.post('/register', UserController.save);
 router.post('/login', UserController.login);
-router.put('/update', md_auth.authenticate, UserController.update);
+router.put('/user/update', md_auth.authenticate, UserController.update);
 router.post('/upload-avatar', [md_auth.authenticate, md_upload], UserController.uploadAvatar);
 router.get('/avatar/:fileName', UserController.avatar);
 router.get('/users', UserController.getUsers);
