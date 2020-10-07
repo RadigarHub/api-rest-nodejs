@@ -194,7 +194,7 @@ var controller = {
         });
       }
 
-      if (user && user.email == params.email) {
+      if (user && user.email == params.email && req.user.email != params.email) {
         return res.status(400).send({
           message: "El email no puede ser actualizado porque ya está asignado a otro usuario."
         });
