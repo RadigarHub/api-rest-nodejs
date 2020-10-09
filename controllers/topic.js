@@ -143,6 +143,7 @@ var controller = {
     // Find por el id del topic
     Topic.findById(topicId)
       .populate('user')
+      .populate('comments.user')
       .exec((err, topic) => {
 
         // Devolver resultado
@@ -164,7 +165,7 @@ var controller = {
           status: "success",
           topic
         });
-    })
+    });
   },
 
   update: function(req, res) {
