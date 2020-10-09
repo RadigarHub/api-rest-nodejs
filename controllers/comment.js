@@ -194,10 +194,31 @@ var controller = {
             });
           }
 
-          // Devolver un resultado
-          return res.status(200).send({
-            status: "success",
-            topic
+          // Find por el id del topic
+          Topic.findById(topic._id)
+            .populate('user')
+            .populate('comments.user')
+            .exec((err, topic) => {
+
+              // Devolver resultado
+              if (err) {
+                return res.status(500).send({
+                  status: "error",
+                  message: "Error en la petición"
+                });  
+              }
+
+              if (!topic) {
+                return res.status(400).send({
+                  status: "error",
+                  message: "No existe el tema"
+                });
+              }
+
+              return res.status(200).send({
+                status: "success",
+                topic
+              });
           });
         });
 
